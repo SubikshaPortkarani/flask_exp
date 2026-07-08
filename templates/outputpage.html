@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Output Page</title>
+</head>
+<body>
+
+<h1>Output Page</h1>
+
+<h2>{{ subi }}</h2>
+
+{% if name == "subik" %}
+    <h2>Hello subik</h2>
+{% else %}
+    <h2>Hey User</h2>
+{% endif %}
+
+<h2>Student List</h2>
+
+{% for student in students %}
+    <p>{{ student }}</p>
+{% endfor %}
+
+</body>
+</html>
