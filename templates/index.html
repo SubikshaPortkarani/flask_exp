@@ -1,83 +1,144 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login Page</title>
+    <title>Student Form</title>
 
     <style>
-
         body{
-            margin:0;
-            background-color:lightgray;
             font-family:Arial;
+            background:#f2f2f2;
         }
 
         .container{
-            width:400px;
-            height:500px;
-            margin:50px auto;
+            display:flex;
+            justify-content:center;
+            gap:40px;
+            margin-top:40px;
+        }
+
+        .box{
+            width:320px;
             border:2px solid black;
-            background-color:white;
+            padding:20px;
+            background:white;
         }
 
-        .header{
-            height:60px;
-            border-bottom:2px solid black;
-            text-align:center;
-	    padding:15px;
-        }
-
-        .content{
-            padding:50px;
+        h2{
             text-align:center;
         }
 
         label{
-            font-size:18px;
+            display:block;
+            margin-top:15px;
+            font-weight:bold;
         }
 
-        input{
-            width:220px;
+        input,select{
+            width:100%;
             height:35px;
-            border:2px solid black;
-            border-radius:5px;
-            margin-bottom:20px;
+            margin-top:5px;
+            font-size:16px;
         }
 
-        .footer{
-            height:60px;
-	    padding:15px;
-            background-color:light;
-            border-top:2px solid black;
-            margin-top:90px;
+        #colorBox{
+            width:120px;
+            height:80px;
+            border:2px solid black;
+            margin:20px auto;
+            background:white;
+        }
+
+        h3{
+            margin-top:15px;
         }
 
     </style>
-
 </head>
 
 <body>
 
 <div class="container">
 
-    <div class="header">
-        <h2>Login Page</h2>
+    <!-- Left Box -->
+
+    <div class="box">
+
+        <h2>Student Form</h2>
+
+        <label>First Name</label>
+        <input type="text" id="fname" onkeyup="updateCard()">
+
+        <label>Last Name</label>
+        <input type="text" id="lname" onkeyup="updateCard()">
+
+        <label>Choose Colour</label>
+
+        <select id="color" onchange="updateCard()">
+            <option value="red">Red</option>
+            <option value="blue">Blue</option>
+            <option value="green">Green</option>
+            <option value="yellow">Yellow</option>
+            <option value="orange">Orange</option>
+            <option value="pink">Pink</option>
+            <option value="purple">Purple</option>
+        </select>
+
+        <label>Date of Birth</label>
+        <input type="date" id="dob" onchange="updateCard()">
+
     </div>
 
-    <div class="content">
+    <!-- Right Box -->
 
-        <label>User Name</label><br><br>
-        <input type="text" placeholder="Enter User Name"><br>
+    <div class="box">
 
-        <label>Password</label><br><br>
-        <input type="password" placeholder="Enter Password">
+        <h2>Student Details</h2>
 
-    </div>
+        <h3>First Name : <span id="showFirst"></span></h3>
 
-    <div class="footer">
-       
+        <h3>Last Name : <span id="showLast"></span></h3>
+
+        <div id="colorBox"></div>
+
+        <h3>Age : <span id="showAge"></span></h3>
+
     </div>
 
 </div>
+
+<script>
+
+function updateCard(){
+
+    let first = document.getElementById("fname").value;
+    let last = document.getElementById("lname").value;
+    let color = document.getElementById("color").value;
+    let dob = document.getElementById("dob").value;
+
+    document.getElementById("showFirst").innerHTML = first;
+    document.getElementById("showLast").innerHTML = last;
+
+    document.getElementById("colorBox").style.backgroundColor = color;
+
+    if(dob != ""){
+
+        let birth = new Date(dob);
+        let today = new Date();
+
+        let age = today.getFullYear() - birth.getFullYear();
+
+        let month = today.getMonth() - birth.getMonth();
+
+        if(month < 0 || (month == 0 && today.getDate() < birth.getDate())){
+            age--;
+        }
+
+        document.getElementById("showAge").innerHTML = age + " Years";
+    }
+
+}
+
+</script>
 
 </body>
 </html>
