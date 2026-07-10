@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Feedback Form</title>
+    <style>body{
+    font-family:Arial;
+    background:#f2f2f2;
+}
+
+.box{
+    width:1000px;
+    margin:40px auto;
+    padding:20px;
+    border:2px solid black;
+    background:white;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table,th,td{
+    border:1px solid black;
+}
+
+th,td{
+    padding:10px;
+    text-align:center;
+}
+
+th{
+    background:#4CAF50;
+    color:white;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h2 align="center">Student Feedback Details</h2>
+
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Student Feedback</h2>
+    <!-- The action must point to your route and method must be POST -->
+    <form action="/feedback" method="POST">
+        
+        <div class="form-group">
+            <label>Student Name:</label>
+            <input type="text" name="student" required>
+        </div>
+
+        <div class="form-group">
+            <label>Year:</label>
+            <select name="year" required>
+                <option value="">--Select Year--</option>
+                <option value="1st Year">1st Year</option>
+                <option value="2nd Year">2nd Year</option>
+                <option value="3rd Year">3rd Year</option>
+                <option value="4th Year">4th Year</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>College:</label>
+            <input type="text" name="college" required>
+        </div>
+
+        <div class="form-group">
+            <label>Date of Birth:</label>
+            <input type="date" name="dob" required>
+        </div>
+
+        <div class="form-group">
+            <label>Gender:</label>
+            <select name="gender" required>
+                <option value="">--Select Gender--</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Address:</label>
+            <textarea name="address" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Rating (1-5):</label>
+            <select name="rating" required>
+                <option value="">--Select Rating--</option>
+                <option value="5">5 - Excellent</option>
+                <option value="4">4 - Good</option>
+                <option value="3">3 - Average</option>
+                <option value="2">2 - Fair</option>
+                <option value="1">1 - Poor</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Remark:</label>
+            <textarea name="remark" required></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">Submit Feedback</button>
+    </form>
+</div>
+
+</body>
+</html>
