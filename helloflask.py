@@ -77,7 +77,6 @@ def check_login():
         error="Invalid Username or Password"
     )
 
-
 @app.route("/dashboard")
 def dashboard():
 
@@ -85,29 +84,9 @@ def dashboard():
     cur = conn.cursor()
 
     cur.execute("SELECT COUNT(*) FROM feedback")
-    total = cur.fetchone()[0]
+    total_feedback = cur.fetchone()[0]
 
-    ratings = {}
-
-    for i in range(1, 6):
-        cur.execute(
-            "SELECT COUNT(*) FROM feedback WHERE rating=?",
-            (i,)
-        )
-        ratings[i] = cur.fetchone()[0]
-
-    conn.close()
-
-    return render_template(
-        "dashboard.html",
-        total=total,
-        one=ratings[1],
-        two=ratings[2],
-        three=ratings[3],
-        four=ratings[4],
-        five=ratings[5]
-    )
-      cur.execute("SELECT COUNT(*) FROM college")
+    cur.execute("SELECT COUNT(*) FROM college")
     total_colleges = cur.fetchone()[0]
 
     conn.close()
@@ -337,18 +316,18 @@ def api_delete():
         "message": "Feedback Deleted Successfully"
     })
 
-@app.route("/collegeform",methods=["GET","POST"])
+@app.route("/collegeform", methods=["GET", "POST"])
 def collegeform():
 
-    if request.method=="POST":
+    if request.method == "POST":
 
-        conn=get_db()
-        cur=conn.cursor()
+        conn = get_db()
+        cur = conn.cursor()
 
         cur.execute("""
-        INSERT INTO college
-        (college_id,college_name,city,email_id,phone)
-        VALUES(?,?,?,?,?)
+            INSERT INTO college
+            (college_id,college_name,city,email_id,phone)
+            VALUES(?,?,?,?,?)
         """,(
             request.form["college_id"],
             request.form["college_name"],
@@ -524,8 +503,5 @@ def delete_college():
     return jsonify({"message": "College Deleted Successfully"})
   
 if __name__ == "__main__":
-
- 
-    app.run(
-        debug=True,)
+    app.run(debug=True,)
 
