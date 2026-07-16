@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CollegeForm</title>
+
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#f2f2f2;
+            margin:0;
+            padding:0;
+        }
+
+        .container{
+            width:700px;
+            margin:30px auto;
+            background:white;
+            padding:25px;
+            border-radius:10px;
+            box-shadow:0px 0px 10px gray;
+        }
+
+        h2{
+            text-align:center;
+            color:black;
+        }
+
+        table{
+            width:100%;
+        }
+
+        td{
+            padding:10px;
+        }
+
+        input,select{
+            width:100%;
+            padding:8px
+            border:1px solid #999;
+            border-radius:5px;
+        }
+
+        .btn{
+            padding:10px 20px;
+            border:none;
+            color:black;
+            border-radius:5px;
+            margin-right:10px;
+        }
+
+        .save{
+            background:white;
+        }
+
+        .reset{
+            background:white;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>Colleg Form</h2>
+
+<form action="/collegeform" method="POST">
+
+<table>
+
+<tr>
+<td>College_id</td>
+<td>
+<input type="text" name="college_id" required>
+</td>
+</tr>
+
+<tr>
+<td>College Name</td>
+<td>
+<input type="text" name="college_name" required>
+</td>
+</tr>
+
+
+<tr>
+<td>City</td>
+<td>
+<input type="text" name="city" required>
+</td>
+</tr>
+
+
+<tr>
+<td>Email ID</td>
+<td>
+<input type="email" name="email_id" required>
+</td>
+</tr>
+
+<tr>
+<td>Phone Number</td>
+<td>
+<input type="text" name="phone" required>
+</td>
+</tr>
+
+
+<tr>
+<td colspan="2" align="center">
+
+<input type="submit" value="Save" class="btn save">
+
+<input type="reset" value="Reset" class="btn reset">
+
+</td>
+</tr>
+
+</table>
+
+</form>
+
+</div>
+
+</body>
+</html>

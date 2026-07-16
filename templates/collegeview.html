@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>collegeviewform</title>
+
+<style>
+
+body{
+font-family:Arial;
+background:#f2f2f2;
+}
+
+table{
+width:95%;
+margin:auto;
+border-collapse:collapse;
+background:white;
+}
+
+th{
+background:white;
+color:black;
+padding:10px;
+}
+
+td{
+padding:10px;
+text-align:center;
+border:1px solid gray;
+}
+
+h1{
+text-align:center;
+}
+
+button{
+padding:10px 20px;
+background:white;
+color:black;
+border:none;
+margin:10px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>college Feedback Details</h1>
+
+<center>
+
+<a href="/dashboard">
+<button>Dashboard</button>
+</a>
+
+<a href="/feedback">
+<button>collegeform</button>
+</a>
+
+</center>
+<table border="1">
+    
+     <tr>
+        <th>college_ID</th>
+        <th>College_name</th>
+        <th>City</th>
+        <th>Email_id</th>
+        <th>Phone</th>
+    </tr>
+
+    {% for c in colleges %}
+    <tr>
+        <td>{{ c.college_id }}</td>
+        <td>{{ c.college_name }}</td>
+        <td>{{ c.city }}</td>
+        <td>{{ c.email_id }}</td>
+        <td>{{ c.phone }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

@@ -1,87 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Student Dashboard</title>
+    <title>Student Dashboard</title>
 
 <style>
 
 body{
     margin:0;
+    padding:0;
     font-family:Arial;
     background:#f2f2f2;
 }
 
 .container{
-    width:1100px;
-    margin:30px auto;
-}
-
-h1{
+    width:1200px;
+    margin:auto;
     text-align:center;
 }
 
-.row{
+h1{
+    color:white;
+    margin-top:30px;
+}
+
+.cards{
     display:flex;
     justify-content:space-between;
-    margin-top:20px;
+    margin-top:40px;
 }
 
 .card{
     width:160px;
-    height:120px;
+    height:110px;
+    border:2px solid #333;
+    border-radius:8px;
     background:white;
-    border:2px solid black;
-    text-align:center;
-    padding-top:15px;
+    box-shadow:2px 2px 5px gray;
 }
 
 .card h3{
-    margin:0;
+    margin-top:15px;
+    font-size:20px;
 }
 
-.card h2{
-    color:blue;
 }
 
-.button-box{
-    margin-top:30px;
-    text-align:center;
+.buttons{
+    margin-top:40px;
 }
 
 button{
-    width:220px;
+    width:200px;
     height:45px;
     font-size:18px;
-    margin:10px;
-    background:#0066cc;
-    color:white;
+    background:blck;
+    color:black;
     border:none;
-    cursor:pointer;
+    border-radius:5px;
+    margin:10px;
 }
 
 button:hover{
-    background:#004080;
-}
-
-table{
-    width:100%;
-    margin-top:30px;
-    border-collapse:collapse;
-    background:white;
-}
-
-table,th,td{
-    border:1px solid black;
-}
-
-th{
-    background:#0066cc;
-    color:white;
-}
-
-th,td{
-    padding:10px;
-    text-align:center;
+    background:#black;
 }
 
 </style>
@@ -92,9 +72,9 @@ th,td{
 
 <div class="container">
 
-<h1>Student Dashboard</h1>
+<h1>STUDENT DASHBOARD</h1>
 
-<div class="row">
+<div class="cards">
 
 <div class="card">
 <h3>Total Feedback</h3>
@@ -102,41 +82,57 @@ th,td{
 </div>
 
 <div class="card">
-<h3>5 Star</h3>
+<h3>5 ★ Rating</h3>
 <h2>{{ five }}</h2>
 </div>
 
 <div class="card">
-<h3>4 Star</h3>
+<h3>4 ★ Rating</h3>
 <h2>{{ four }}</h2>
 </div>
 
 <div class="card">
-<h3>3 Star</h3>
+<h3>3 ★ Rating</h3>
 <h2>{{ three }}</h2>
 </div>
 
 <div class="card">
-<h3>2 Star</h3>
+<h3>2 ★ Rating</h3>
 <h2>{{ two }}</h2>
 </div>
 
 <div class="card">
-<h3>1 Star</h3>
+<h3>1 ★ Rating</h3>
 <h2>{{ one }}</h2>
 </div>
 
 </div>
 
-<div class="button-box">
+<div class="buttons">
 
-<a href="/feedback">
+<h2>Student Feedback Management System</h2>
+
+<a href="{{ url_for('feedback') }}">
 <button>Student Feedback Form</button>
 </a>
 
-<a href="/">
+<a href="{{ url_for('view_feedback') }}">
+<button>View Feedback</button>
+</a>
+
+<a href="{{ url_for('collegeform') }}">
+<button>College Form</button>
+</a>
+
+<a href="{{ url_for('collegeview') }}">
+<button>College View</button>
+</a>
+
+<a href="{{ url_for('logout') }}">
 <button>Logout</button>
 </a>
+
+</div>
 
 </div>
 
