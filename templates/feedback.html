@@ -54,6 +54,11 @@ button{
     font-size:16px;
     margin:5px;
 }
+{% if error %}
+<div style="color:red; text-align:center; margin-bottom:10px;">
+    {{ error }}
+</div>
+{% endif %}
 
 </style>
 
@@ -75,9 +80,9 @@ button{
 </tr>
 
 <tr>
-<td>Student Name</td>
+<td>Student_Name</td>
 <td>
-<input type="text" name="student" required>
+<input type="text" name="student_name" required>
 </td>
 </tr>
 
@@ -96,10 +101,17 @@ button{
 </tr>
 
 <tr>
-<td>College</td>
-<td>
-<input type="text" name="college" required>
-</td>
+    <td>College</td>
+    <td>
+<select name="college_id" required>
+    <option value="">Select College</option>
+    {% for college in colleges %}
+        <option value="{{ college.id }}">
+            {{ college.college_name }}
+        </option>
+    {% endfor %}
+</select>
+            </td>
 </tr>
 
 <tr>

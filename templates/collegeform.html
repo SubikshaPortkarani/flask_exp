@@ -65,9 +65,23 @@
 
 <h2>Colleg Form</h2>
 
+{% if error %}
+<p style="color:red;text-align:center;">
+    {{ error }}
+</p>
+{% endif %}
+
 <form action="/collegeform" method="POST">
 
 <table>
+
+<tr>
+<td>id</td>
+<td>
+<input type="text" name="id" required>
+</td>
+</tr>
+
 
 <tr>
 <td>College_id</td>

@@ -65,7 +65,8 @@ margin:10px;
 <table border="1">
     
      <tr>
-        <th>college_ID</th>
+        <th>id</th>
+        <th>college_id</th>
         <th>College_name</th>
         <th>City</th>
         <th>Email_id</th>
@@ -74,6 +75,7 @@ margin:10px;
 
     {% for c in colleges %}
     <tr>
+        <td>{{ c.id }}</td>
         <td>{{ c.college_id }}</td>
         <td>{{ c.college_name }}</td>
         <td>{{ c.city }}</td>

@@ -11,23 +11,23 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
-
 def create_feedback_table():
     conn = get_db()
     cur = conn.cursor()
 
     cur.execute("""
-    CREATE TABLE IF NOT EXISTS feedback(
+    CREATE TABLE IF NOT EXISTS feedback (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         student_name TEXT NOT NULL,
         year TEXT,
-        college TEXT,
+        college_id INTEGER,
         dob TEXT,
         gender TEXT,
         email_id TEXT UNIQUE,
         address TEXT,
         rating INTEGER,
-        remark TEXT
+        remark TEXT,
+        FOREIGN KEY (college_id) REFERENCES college(id)
     )
     """)
 
@@ -40,11 +40,11 @@ def create_college_table():
     cur = conn.cursor()
 
     cur.execute("""
-    CREATE TABLE IF NOT EXISTS college(
+    CREATE TABLE IF NOT EXISTS college (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
-        college_id TEXT UNIQUE,
-        college_name TEXT,
-        city TEXT,
+        college_id TEXT UNIQUE NOT NULL,
+        college_name TEXT NOT NULL,
+        city TEXT NOT NULL,
         email_id TEXT,
         phone TEXT
     )
@@ -52,8 +52,22 @@ def create_college_table():
 
     conn.commit()
     conn.close()
+def get_colleges():
+    conn = get_db()
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
 
+    cur.execute("""
+        SELECT id, college_name
+        FROM college
+        ORDER BY college_name
+    """)
 
+    colleges = cur.fetchall()
+
+    conn.close()
+
+    return colleges
 create_feedback_table()
 create_college_table()
 
@@ -101,23 +115,21 @@ def dashboard():
 def logout():
     return redirect(url_for("login"))
 
-
-@app.route("/feedback", methods=["GET","POST"])
+@app.route("/feedback", methods=["GET", "POST"])
 def feedback():
 
-    if request.method=="POST":
+    conn = get_db()
+    cur = conn.cursor()
 
-        conn=get_db()
-        cur=conn.cursor()
-
+    if request.method == "POST":
         cur.execute("""
-        INSERT INTO feedback
-        (student_name,year,college,dob,gender,email_id,address,rating,remark)
-        VALUES(?,?,?,?,?,?,?,?,?)
-        """,(
+            INSERT INTO feedback
+            (student_name, year, college_id, dob, gender, email_id, address, rating, remark)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
             request.form["student_name"],
             request.form["year"],
-            request.form["college"],
+            request.form["college_id"],
             request.form["dob"],
             request.form["gender"],
             request.form["email_id"],
@@ -131,26 +143,46 @@ def feedback():
 
         return redirect(url_for("view_feedback"))
 
-    return render_template("feedback.html")
+    cur.execute("SELECT id, college_name FROM college")
+    colleges = cur.fetchall()
+    conn.close()
+
+    return render_template("feedback.html", colleges=colleges)
 
 @app.route("/view_feedback")
 def view_feedback():
 
-    conn=get_db()
-    conn.row_factory=sqlite3.Row
+    conn = get_db()
+    conn.row_factory = sqlite3.Row
+    cur = conn.cursor()
 
-    cur=conn.cursor()
+    cur.execute("""
+    SELECT
+        feedback.id,
+        feedback.student_name,
+        feedback.year,
+        college.college_name,
+        feedback.dob,
+        feedback.gender,
+        feedback.email_id,
+        feedback.address,
+        feedback.rating,
+        feedback.remark
+    FROM feedback
+    JOIN college
+        ON feedback.college_id = college.id
+    ORDER BY feedback.id
+    """)
 
-    cur.execute("SELECT * FROM feedback")
-
-    data=cur.fetchall()
+    feedbacks = cur.fetchall()
 
     conn.close()
 
     return render_template(
-        "view_feedback.html",
-        data=data
+        "viewfeedback.html",
+        feedbacks=feedbacks
     )
+
 @app.route("/api/create", methods=["POST"])
 def api_create():
 
@@ -324,24 +356,34 @@ def collegeform():
         conn = get_db()
         cur = conn.cursor()
 
-        cur.execute("""
-            INSERT INTO college
-            (college_id,college_name,city,email_id,phone)
-            VALUES(?,?,?,?,?)
-        """,(
-            request.form["college_id"],
-            request.form["college_name"],
-            request.form["city"],
-            request.form["email_id"],
-            request.form["phone"]
-        ))
+        try:
+            cur.execute("""
+                INSERT INTO college
+                (college_id, college_name, city, email_id, phone)
+                VALUES (?, ?, ?, ?, ?)
+            """, (
+                request.form["college_id"],
+                request.form["college_name"],
+                request.form["city"],
+                request.form["email_id"],
+                request.form["phone"]
+            ))
 
-        conn.commit()
-        conn.close()
+            conn.commit()
+            conn.close()
 
-        return redirect(url_for("collegeview"))
+            return redirect(url_for("collegeview"))
+
+        except sqlite3.IntegrityError:
+            conn.close()
+
+            return render_template(
+                "collegeform.html",
+                error="College ID already exists. Please enter a different College ID."
+            )
 
     return render_template("collegeform.html")
+
 
 @app.route("/collegeview")
 def collegeview():
@@ -377,15 +419,17 @@ def create_college():
         cur.execute("""
         INSERT INTO college
         (
+            id,
             college_id,
             college_name,
             city,
             email_id,
             phone
         )
-        VALUES (?,?,?,?,?)
+        VALUES (?,?,?,?,?,?)
         """,
         (
+            data["id"],
             data["college_id"],
             data["college_name"],
             data["city"],
@@ -436,14 +480,12 @@ def select_college():
         "message": "College Not Found"
     })
 
-
 @app.route("/college/update", methods=["POST"])
 def update_college():
 
     data = request.get_json()
 
     conn = get_db()
-
     cur = conn.cursor()
 
     cur.execute("""
@@ -454,8 +496,7 @@ def update_college():
         email_id=?,
         phone=?
     WHERE college_id=?
-    """,
-    (
+    """, (
         data["college_name"],
         data["city"],
         data["email_id"],
@@ -466,18 +507,12 @@ def update_college():
     conn.commit()
 
     if cur.rowcount == 0:
-
         conn.close()
-
-        return jsonify({
-            "message": "College Not Found"
-        })
+        return jsonify({"message": "College Not Found"})
 
     conn.close()
 
-    return jsonify({
-        "message": "College Updated Successfully"
-    })
+    return jsonify({"message": "College Updated Successfully"})
 
 @app.route("/college/delete", methods=["POST"])
 def delete_college():
